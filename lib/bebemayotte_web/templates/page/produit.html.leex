@@ -1,6 +1,18 @@
 <div class="row product">
   <!-- début aside bar -->
   <section class="col col-lg-2 side">
+    <form phx-change="tri" class="form-tri">
+      <input type="hidden" name="valeur" id="selectedHidden" value="<%= @tri_select %>" >
+      <input type="hidden" name="cat" value="<%= @cat %>" >
+      <input type="hidden" name="souscat" value="<%= @souscat %>" >
+      <input type="hidden" name="search" value="<%= @search %>" >
+      <select name="select-1" id="select-1">
+        <option value="1" id="selected-1">Tri par defaut</option>
+        <option value="2" id="selected-2">Tri par tarif croissant</option>
+        <option value="3" id="selected-2">Tri par tarif décroissant</option>
+        <option value="4" id="selected-4">Tri du plus récent au plus ancien</option>
+      </select>
+    </form>
   <div class="sider">
     <%= for categorie <- @categories  do %>
     <input type="checkbox" id="<%= categorie.id_cat %>" class="input">
@@ -16,18 +28,6 @@
       </div>
     <% end %>
   </div>
-      <form phx-change="tri" class="form-tri">
-        <select name="select-1" id="select-1">
-          <option value="1" id="selected-1">Tri par defaut</option>
-          <option value="2" id="selected-2">Tri par tarif croissant</option>
-          <option value="3" id="selected-2">Tri par tarif décroissant</option>
-          <option value="4" id="selected-4">Tri du plus récent au plus ancien</option>
-        </select>
-        <input type="hidden" name="valeur" id="selectedHidden" value="<%= @tri_select %>" >
-        <input type="hidden" name="cat" value="<%= @cat %>" >
-        <input type="hidden" name="souscat" value="<%= @souscat %>" >
-        <input type="hidden" name="search" value="<%= @search %>" >
-      </form>
   </section>
   <!-- fin aside bar -->
   <!-- début contenue principale -->
