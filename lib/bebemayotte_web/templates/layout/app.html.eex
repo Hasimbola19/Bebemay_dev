@@ -19,17 +19,17 @@
     <div class="navigation">
       <div class="header-nav">
         <ul class="ul1">
-          <li class="menu-item3"><a href="mailto:focicom@gmail.com">focicon@gmail.com</a></li>
+          <li class="menu-item3"><a href="mailto:focicom@gmail.com">focicom@gmail.com</a></li>
           <li class="menu-item3"><a href="tel:0269613910">0269 61 39 10</a></li>
         </ul>
         <ul class="ul3">
-           <li class="menu-item">
+          <li class="menu-item"><a href="/" class="nav-link">Accueil</a></li>
+          <li class="menu-item">
             <a href="/produit" class="nav-link">Boutique</a>
             <ul>
 
             </ul>
           </li>
-          <li class="menu-item"><a href="/" class="nav-link">Accueil</a></li>
           <li class="menu-item"><a href="/contact" class="nav-link">Contact</a></li>
           <li class="menu-item"><a href="/question" class="nav-link">Qu'en pensez-vous?</a></li>
         </ul>
