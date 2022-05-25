@@ -284,7 +284,7 @@ pre{padding: 1em;}
   background-color: #ffffff;
   color: #000;
   cursor: pointer;
-  padding: 12px;
+  /*padding: 12px;*/
   width: 100%;
   border: none;
   text-align: left;
@@ -293,23 +293,24 @@ pre{padding: 1em;}
   transition: 0.4s;
 }
 
-.accordion:after {
+.accordion:before {
   content: '\002B';
   color: #000;
   font-weight: bold;
-  float: right;
-  margin-left: 5px;
+  float: left;
+  margin-right: 5px
 }
 
 .accordion a{
   color: #000;
+  font-size: x-small;
 }
 
 .accordion a:hover{
   color: #0010bb;
 }
 
-.active:after {
+.active:before {
   content: "\2212";
 }
 
@@ -433,7 +434,7 @@ pre{padding: 1em;}
 
 .imge img {
     max-width: 100%;
-    height: 210px;
+    height: 170px;
     padding-top: 10px;
 }
 
@@ -2030,8 +2031,8 @@ label {
 .side{
   /* border: 1px solid rgba(0, 0, 0, 0.295); */
   text-align: center;
-  margin-left: 25px;
-  width: 400px;
+  margin-left: 15px;
+  width: 200px;
   padding-top: 45px;
 }
 
@@ -2080,9 +2081,9 @@ label {
 @media screen and (min-width:1300px) 
 {
   .article{
-    display:grid;
-    grid-template-columns: 30% 30% 30% /*24%*/;
-    
+    display: grid;
+    grid-template-columns: 23% 23% 23% 23%;
+    margin: 20px 5px 0px 30px;
   } 
 }
 @media screen and (max-width:1000px) 
@@ -2107,6 +2108,11 @@ label {
   width: 100%;
   /* height: 240px; */
   border: none;
+}
+
+h4.prix{
+  color: #ffb4f5;
+  font-size: 15px;
 }
 
 .prix{
@@ -3028,10 +3034,10 @@ input[type='radio']{
   border-color:black;
 }
 .detail{
-  width:51%;
-  margin:0 auto;
   color: #313131;
-  margin-bottom: 40%;
+  margin-bottom: 30%;
+  text-transform: lowercase;
+  text-align: center;
 }
 .detail h5{
   margin-left:3%;
