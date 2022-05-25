@@ -8,8 +8,6 @@
             <% end %>
         </div>
         <div class="title_produit">
-           <h1><%= @produit.title %></h1>
-           <p><%= @produit.id_produit %></p>
            <br>
            <h2 class="prix">€ <%= Decimal.round(@produit.price, 2) %></h2>
            <br>
@@ -43,12 +41,13 @@
            </div>
            <h3> <b>Catégories :</b> <%= @categorie_prod %>,<br> <b> Sous Catégorie :</b> <%= @souscategorie_prod %></h3>
         </div>
-        <h2>Description</h2>
-
+        <div class="descri_projet">
+          <h2>Description</h2>
+            <h3><%= @produit.title %></h3>
+            <p><%= @produit.id_produit %></p>
+        </div>
     </div>
     <div class="apparente">
-        <h2>Description</h2>
-        <h4><strong><%= @produit.title %></strong></h3>
         <h2>Produits apparentés</h2>
         <div class="article" >
             <%= for apparent <- @apparentes do %>
