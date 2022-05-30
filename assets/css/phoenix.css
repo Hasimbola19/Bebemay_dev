@@ -170,9 +170,8 @@ pre{padding: 1em;}
 }
 
 .header-nav .ul3 .menu-item a:hover,.header-nav .ul2 .menu-item1 a:hover, .header-nav .ul1 .menu-item3 a:hover{
-  /*color: #000;*/
+  color: #000;
   height: 20px;
-  border: #fff solid 1px;
 }
 
 .header-main{
