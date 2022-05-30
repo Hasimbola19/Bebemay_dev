@@ -20,15 +20,34 @@
                   </li>
                     <li class="mode_payement">
                       moyen de payement :
-                      <strong>Transaction en ligne with Stripe.</strong>
+                      <strong>E-Transaction</strong>
                   </li>
               </ul>
           </div>
-          <form method="post" action="/validate_command">
-            <input type="text" name="_csrf_token" value="<%= Plug.CSRFProtection.get_csrf_token() %>">
+          <form method="post" action="<%= @urletrans %>">
+            <input type="hidden" name="PBX_SITE" value="<%= @pbx_site %>">
+            <input type="hidden" name="PBX_RANG" value="<%= @pbx_rang %>">
+            <input type="hidden" name="PBX_IDENTIFIANT" value="<%= @pbx_identifiant %>">
+            <input type="hidden" name="PBX_TOTAL" value="<%= @pbx_total %>">
+            <input type="hidden" name="PBX_DEVISE" value="978">
+            <input type="hidden" name="PBX_CMD" value="<%= @pbx_cmd %>">
+            <input type="hidden" name="PBX_PORTEUR" value="<%= @pbx_porteur %>">
+            <input type="hidden" name="PBX_REPONDRE_A" value="<%= @pbx_repondre_a %>">
+            <input type="hidden" name="PBX_RETOUR" value="<%= @pbx_retour %>">
+            <input type="hidden" name="PBX_EFFECTUE" value="<%= @pbx_effectue %>">
+            <input type="hidden" name="PBX_ANNULE" value="<%= @pbx_annule %>">
+            <input type="hidden" name="PBX_REFUSE" value="<%= @pbx_refuse %>">
+            <input type="hidden" name="PBX_HASH" value="SHA512">
+            <input type="hidden" name="PBX_TIME" value="<%= @pbx_time %>">
+            <input type="hidden" name="PBX_SHOPPINGCART" value="<%= @pbx_shoppingcart %>">
+            <input type="hidden" name="PBX_BILLING" value="<%= @pbx_billing %>">
+            <input type="hidden" name="PBX_HMAC" value="<%= @hmac %>">
             <button class="btn" type="submit">Continuer</button>
           </form>
-
+          <form method="post" action="/validation_command">
+            <input type="hidden" name="_csrf_token" value="<%= Plug.CSRFProtection.get_csrf_token()%>">
+          </form>
+      <p><%= @msg %></p>
       </div>
   <% else %>
       <div class="validation_commande">
