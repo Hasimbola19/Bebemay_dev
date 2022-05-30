@@ -276,30 +276,175 @@ defmodule BebemayotteWeb.CompteController do
   end
 
   # VALIDER ET PAYER COMMANDE
-  def validation(conn,_params) do
-    categories = CatRequette.get_all_categorie()
-    id = Plug.Conn.get_session(conn, :user_id)
-    paniers = Plug.Conn.get_session(conn, :paniers)
-    quantites = Plug.Conn.get_session(conn, :quantites)
-    details = id |> Fonction.detail_commande_show(paniers, quantites)
-    prix_total = details |> Fonction.get_prix_total()
-    remise = Float.round((prix_total * 5)/100, 2)
-    prix_remise = prix_total - remise
-    num_commande = id |> Fonction.fn_2()
-    date = NaiveDateTime.local_now() |> NaiveDateTime.to_date()
+    # VALIDER ET PAYER COMMANDE
+    def validation(conn,_params) do
+      categories = CatRequette.get_all_categorie()
+      id = Plug.Conn.get_session(conn, :user_id)
+      paniers = Plug.Conn.get_session(conn, :paniers)
+      quantites = Plug.Conn.get_session(conn, :quantites)
+      details = id |> Fonction.detail_commande_show(paniers, quantites)
+      prix_total = details |> Fonction.get_prix_total()
+      remise = Float.round((prix_total * 5)/100, 2)
+      prix_remise = prix_total - remise
+      num_commande = id |> Fonction.fn_2()
+      date = NaiveDateTime.local_now() |> NaiveDateTime.to_date()
+      mail = UserRequette.get_user_email_by_id(id)
 
-    commande = %{
-      "numero" => num_commande,
-      "total" => prix_remise,
-      "date" => date
-    }
+      commande = %{
+        "numero" => num_commande,
+        "total" => prix_remise,
+        "date" => date
+      }
 
-    if prix_total == nil do
-      render(conn,"validation.html", categories: categories, commande: commande, search: nil, statut_commande: 0)
-    else
-      render(conn,"validation.html", categories: categories, commande: commande, search: nil, statut_commande: 1)
+      pbx_site = "2366513" #"1999888"
+      pbx_rang = "01" #"32"
+      pbx_identifiant = "122909322" #"123456789"
+      # total = "200"
+      total = prix_remise |> to_string()
+      # // Suppression des points ou virgules dans le montant
+
+      pbx_total = total |> String.replace(",", "") |> String.replace(".", "")
+
+      pbx_cmd = num_commande
+      pbx_porteur = mail
+
+      # // Paramétrage de l'url de retour back office site (notification de paiement IPN) :
+      pbx_repondre_a = "http://www.votre-site.extention/page-de-back-office-site";
+
+      # // Paramétrage des données retournées via l'IPN :
+      pbx_retour = "Mt:M;Ref:R;Auto:A;Erreur:E";
+
+      # // Paramétrage des urls de redirection navigateur client après paiement :
+      pbx_effectue = "http://localhost:4001"
+      pbx_annule = "http://localhost:4001/produit"
+      pbx_refuse = "http://localhost:4001"
+
+      # // On récupère la date au format ISO-8601 :
+      {erl_date, erl_time} = :calendar.local_time()
+
+      {:ok, time} = Time.from_erl(erl_time)
+
+      {:ok, daty} = Date.from_erl(erl_date)
+
+      heure =  Calendar.strftime(time, "%c", preferred_datetime: "%H:%M:%S")
+
+      dat = Calendar.strftime(daty, "%c", preferred_datetime: "%Y-%m-%d")
+
+      pbx_time = "#{dat}T#{heure}+02:00"
+
+      # // Nombre de produit envoyé dans PBX_SHOPPINGCART :
+      pbx_nb_produit = Enum.count(quantites)
+      # pbx_nb_produit = "5"
+      IO.inspect pbx_nb_produit
+      # // Construction de PBX_SHOPPINGCART :
+      pbx_shoppingcart =
+         "<?xml version=\"1.0\" encoding=\"utf-8\"?><shoppingcart><total><totalQuantity>#{pbx_nb_produit}</totalQuantity></total></shoppingcart>"
+      # // Valeurs envoyées dans PBX_BILLING :
+      pbx_prenom_fact = "Jean-Marie"						#	//variable de test Jean-Marie
+      pbx_nom_fact = "Thomson"
+      pbx_hash = "sha512"
+      # // --------------- SÉLÉCTION DE L'ENVIRRONEMENT ---------------
+      # // Recette (paiements de test)  :
+          urletrans = "https://recette-tpeweb.e-transactions.fr/php/"
+
+      # // Production (paiements réels) :
+        # // URL principale :
+          # urletrans ="https://tpeweb.e-transactions.fr/php/";
+        # // URL secondaire :
+          #urletrans ="https://tpeweb1.e-transactions.fr/php/";
+
+      pbx_adresse1_fact = "1 rue de Paris";								#//variable de test 1 rue de Paris
+      pbx_adresse2_fact = "";								#//variable de test <vide>
+      pbx_zipcode_fact = "75001";						#	//variable de test 75001
+      pbx_city_fact = "Paris";									#//variable de test Paris
+      pbx_country_fact = "250";		#//variable de test 250 (pour la France)
+
+      pbx_billing =
+        "<?xml version=\"1.0\" encoding=\"utf-8\"?><Billing><Address><FirstName>#{pbx_prenom_fact}</FirstName>"<>""<>
+          "<LastName>#{pbx_nom_fact}</LastName><Address1>#{pbx_adresse1_fact}</Address1>"<>""<>
+          "<Addresse2>#{pbx_adresse2_fact}</Addresse2><ZipCode>#{pbx_zipcode_fact}</ZipCode>"<>""<>
+          "<City>#{pbx_city_fact}</City><CountryCode>#{pbx_country_fact}</CountryCode>"<>""<>
+          "</Address></Billing>"
+
+      msg = "PBX_SITE=#{pbx_site}"<>""<>
+        "&PBX_RANG=#{pbx_rang}"<>""<>
+        "&PBX_IDENTIFIANT=#{pbx_identifiant}"<>""<>
+        "&PBX_TOTAL=#{pbx_total}"<>""<>
+        "&PBX_DEVISE=978"<>""<>
+        "&PBX_CMD=#{pbx_cmd}"<>""<>
+        "&PBX_PORTEUR=#{pbx_porteur}"<>""<>
+        "&PBX_REPONDRE_A=#{pbx_repondre_a}"<>""<>
+        "&PBX_RETOUR=#{pbx_retour}"<>""<>
+        "&PBX_EFFECTUE=#{pbx_effectue}"<>""<>
+        "&PBX_ANNULE=#{pbx_annule}"<>""<>
+        "&PBX_REFUSE=#{pbx_refuse}"<>""<>
+        "&PBX_HASH=SHA512"<>""<>
+        "&PBX_TIME=#{pbx_time}"<>""<>
+        "&PBX_SHOPPINGCART=#{pbx_shoppingcart}"<>""<>
+        "&PBX_BILLING=#{pbx_billing}"
+
+      hmackey = "56A05997B9149BFDE3B07BEAFC2BD55FE50321CF3CF5A6623E727A4124CB0999D9590C6D02E036365363E746FE34C3F04F80EF110ABE294A9CD3877F36B38BAE"
+        # "0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF"
+
+      binkey = hmackey |> Base.decode16!()
+
+      hmac = :crypto.mac(:hmac, :sha512, binkey, msg)
+            |> Base.encode16()
+            |> String.upcase()
+
+
+      if prix_total == nil do
+        render(conn,"validation.html",
+          categories: categories,
+          commande: commande,
+          search: nil,
+          statut_commande: 0,
+          pbx_site: pbx_site,
+          pbx_rang: pbx_rang,
+          pbx_identifiant: pbx_identifiant,
+          pbx_total: pbx_total,
+          pbx_cmd: pbx_cmd,
+          pbx_porteur: pbx_porteur,
+          pbx_repondre_a: pbx_repondre_a,
+          pbx_retour: pbx_retour,
+          pbx_effectue: pbx_effectue,
+          pbx_annule: pbx_annule,
+          pbx_refuse: pbx_refuse,
+          pbx_hash: pbx_hash,
+          pbx_time: pbx_time,
+          pbx_shoppingcart: pbx_shoppingcart,
+          pbx_billing: pbx_billing,
+          hmac: hmac,
+          msg: msg,
+          urletrans: urletrans
+         )
+      else
+        render(conn,"validation.html",
+        categories: categories,
+        commande: commande,
+        search: nil,
+        statut_commande: 1,
+        pbx_site: pbx_site,
+        pbx_rang: pbx_rang,
+        pbx_identifiant: pbx_identifiant,
+        pbx_total: pbx_total,
+        pbx_cmd: pbx_cmd,
+        pbx_porteur: pbx_porteur,
+        pbx_repondre_a: pbx_repondre_a,
+        pbx_retour: pbx_retour,
+        pbx_effectue: pbx_effectue,
+        pbx_annule: pbx_annule,
+        pbx_refuse: pbx_refuse,
+        pbx_hash: pbx_hash,
+        pbx_time: pbx_time,
+        pbx_shoppingcart: pbx_shoppingcart,
+        pbx_billing: pbx_billing,
+        hmac: hmac,
+        msg: msg,
+        urletrans: urletrans
+        )
+      end
     end
-  end
   #def valid_pay_command(conn,)
 
   # PAYEMENT EN LIGNE
