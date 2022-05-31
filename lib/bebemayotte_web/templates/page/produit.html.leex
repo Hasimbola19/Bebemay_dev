@@ -1,20 +1,3 @@
-<script>
-var acc = document.getElementsByClassName("accordion");
-var i;
-
-for (i = 0; i < acc.length; i++) {
-  acc[i].addEventListener("click", function() {
-    this.classList.toggle("active");
-    var panel = this.nextElementSibling;
-    if (panel.style.maxHeight) {
-      panel.style.maxHeight = null;
-    } else {
-      panel.style.maxHeight = panel.scrollHeight + "px";
-    }
-  });
-}
-
-</script>
 <div class="row product">
   <!-- début aside bar -->
   <section class="col col-lg-2 side">
@@ -54,6 +37,7 @@ for (i = 0; i < acc.length; i++) {
           <%= @page %>
         <a phx-click="next_page" phx-value-finpage="<%= @nb_page %>" phx-value-idnext="<%= @last_row_id %>" phx-value-page="<%= @page %>" phx-value-cat="<%= @cat %>" phx-value-souscat="<%= @souscat %>" phx-value-search="<%= @search %>" phx-value-tri="<%= @tri_select %>"><i class="fas fa-angle-double-right"></i></a>
       </center>
+      <!--<p class="alert alert-info" role="alert"><%= @message %></p>-->
       <p class="alert alert-info"><%= live_flash(@flash, :info)%></p>
       <div class="article">
           <%= for produit <- @produits do %>
@@ -105,6 +89,21 @@ for (i = 0; i < acc.length; i++) {
     <!--fin contenue  -->
 </div>
 <script>
+var acc = document.getElementsByClassName("accordion");
+var i;
+
+for (i = 0; i < acc.length; i++) {
+  acc[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var panel = this.nextElementSibling;
+    if (panel.style.maxHeight) {
+      panel.style.maxHeight = null;
+    } else {
+      panel.style.maxHeight = panel.scrollHeight + "px";
+    }
+  });
+}
+
 function add_panier(id) {
   quantite = 1
   csrf = document.querySelector("meta[name=csrf]").content
