@@ -16,8 +16,9 @@ defmodule BebemayotteWeb.Live.ProduitLive do
     SyncDb.subscribe()
 
     {:ok,
-     socket |> assign(categories: categories, souscategories: souscategories, produits: produits,
-                      last_row_id: last_row_id, first_row_id: first_row_id,
+     socket
+      |> assign(categories: categories, souscategories: souscategories)
+      |> assign(produits: produits,last_row_id: last_row_id, first_row_id: first_row_id,
                       user: nil, search: search, user: user, session: session, nb_page: nb_page,
                       page: 1, cat: cat, souscat: souscat, tri_select: "1"),
      layout: {BebemayotteWeb.LayoutView, "layout_live.html"}
