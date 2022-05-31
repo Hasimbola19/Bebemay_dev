@@ -18,6 +18,14 @@ defmodule Bebemayotte.UserRequette do
     end
   end
 
+  def get_user_email_by_id(id) do
+    query =
+      from co in User,
+        where: co.id_user == ^id,
+        select: co.adresseMessage
+    Repo.one(query)
+  end
+
   def get_user_adresse_message(adrMess) do
     query =
       from u in User,
