@@ -19,7 +19,7 @@
     <div class="navigation">
       <div class="header-nav">
         <ul class="ul1">
-          <li class="menu-item3"><a href="mailto:focicom@gmail.com">focicom@gmail.com</a></li>
+          <li class="menu-item3"><a href="mailto:focicom@gmail.com"><i class="fab fa-google"></i> focicom@gmail.com</a></li>
           <li class="menu-item3"><a href="tel:0269613910">0269 61 39 10</a></li>
         </ul>
          <ul class="ul3">
@@ -38,11 +38,11 @@
             <%= if is_nil(@user) do %>
               <a href="/connexion"><span class="fas fa-user"></span> Se connecter</a>
             <% else %>
-              <a href="/account"><span class="fas fa-person"></span> Mon compte</a>
+              <a href="/account"><span class="fas fa-user"></span> Mon compte</a>
             <% end %>
           </li>
           <li class="menu-item1"><a href="/contact"><span class="fas fa-phone"></span> Contact</a></li>
-          <li class="menu-item1"><a href="/panier"><i  class='fas fa-shopping-cart'>&#xe057;</i></a><a href="/question"><i  class='fa question-circle'>&#xf059;</i></a></li>
+          <li class="menu-item1"><a href="/panier" class="pan"><i  class='fas fa-shopping-cart'>&#xe057;</i></a><a href="/question" class="pan"><i  class='fa question-circle'>&#xf059;</i></a></li>
         </ul>
       </div>
       <div class="header-main">
