@@ -43,7 +43,7 @@
             <% end %>
           </li>
           <li class="menu-item1"><a href="/contact"><span class="fas fa-phone"></span> Contact</a></li>
-          <li class="menu-item1"><a href="/panier"><i  class='fas fa-shopping-cart'>&#xe057;</i></a><a href="/question"><i  class='fa question-circle'>&#xf059;</i></a></li>
+          <li class="menu-item1"><a href="/panier" class="pan"><i  class='fas fa-shopping-cart'></i></a><a href="/question" class="pan"><i  class='fa question-circle'>&#xf059;</i></a></li>
         </ul>
       </div>
       <div class="header-main">
