@@ -59,7 +59,8 @@ defmodule BebemayotteWeb.Router do
     get "/produit", PageController, :produit
     get "/produit/:cat", PageController, :produit_categorie
     get "/produit/:cat/:souscat", PageController, :produit_souscategorie
-    get "/show_produit/:id", PageController, :detail_produit
+    #get "/show_produit/:id", PageController, :detail_produit
+    get "/produit/:cat/:souscat/:id", PageController, :detail_produit
 
       # COMPTE CONTROLLER
     get "/account", CompteController, :compte
