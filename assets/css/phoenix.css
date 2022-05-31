@@ -327,6 +327,10 @@ pre{padding: 1em;}
   transition: max-height 0.2s ease-out;
 }
 
+.panel ul{
+  margin-bottom: 0;
+}
+
 .accord {
   background-color: #000;
   color: #fff;
@@ -2371,6 +2375,7 @@ caption {
  .bouton-retour > .retour{
   border-color: #121b2c;
   background-color: #121b2c;
+  width: auto;
  }
  .bouton-retour > .retour a {
   color: white;
