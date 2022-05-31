@@ -2126,6 +2126,17 @@ label {
   margin: 5% 10% 5% 10% ;
   /* background: url("/show_produit/produit.id_produit") */
 }
+
+/*.apparente .article .produit .produit_a{
+  margin-left: 65px;
+  margin-top: 2px;
+}*/
+
+.apparente .article #details #details_a{
+  margin: auto;
+  text-align: center;
+}
+
 .produit .produit_a>img{
   width: 50%;
   height: auto;
