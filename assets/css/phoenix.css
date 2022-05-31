@@ -1976,7 +1976,7 @@ header nav a {
   /*-------------contenue connexion, inscri fin--------------- */
  /* **************************Produit deb******************************** */
 .product{
-  padding-top: 250px;
+  padding-top: 150px;
   margin:0 2rem 0 0 ;
   /* padding: 10% 0; */
 }
@@ -2262,9 +2262,8 @@ h4.prix{
 
 #item1 {
   grid-column: 2/5;
+  margin-top: 50px;
 }
-
-
 
 #item3 {
   width: 80%;
@@ -2272,8 +2271,9 @@ h4.prix{
   background-color: #efefef ;
   box-shadow:1px 1px 15px 1px  rgba(0, 0, 0, 0.226);
   grid-column: span 2 / 7;
-  margin-left: 10%;
-  margin-right: 0;
+  /*margin-left: 10%;
+  margin-right: 0;*/
+  margin: 100px 10% 0 75px;
   padding: 0 2.3rem;
   
 }
@@ -2309,7 +2309,9 @@ td.title-left{
   background-color: transparent;
 }
 .shop{
-  width:150px;
+  max-width: 50%;
+  height: auto;
+  /*width:150px;*/
   margin: 0;
 }
 .effacer{
