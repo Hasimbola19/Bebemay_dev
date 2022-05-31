@@ -1,6 +1,7 @@
 <div class="row product">
   <!-- début aside bar -->
   <section class="col col-lg-2 side">
+  <div class="sider">
     <form phx-change="tri" class="form-tri">
       <input type="hidden" name="valeur" id="selectedHidden" value="<%= @tri_select %>" >
       <input type="hidden" name="cat" value="<%= @cat %>" >
@@ -13,7 +14,6 @@
         <option value="4" id="selected-4">Tri du plus récent au plus ancien</option>
       </select>
     </form>
-  <div class="sider">
     <%= for categorie <- @categories  do %>
     <input type="checkbox" id="<%= categorie.id_cat %>" class="input">
       <label for="<%= categorie.id_cat %>" class="accordion"><a href="/produit/<%= categorie.nom_cat %>"><%= categorie.nom_cat %></a></label>
@@ -32,31 +32,6 @@
   <!-- fin aside bar -->
   <!-- début contenue principale -->
   <section class="col-sm all">
-    <!--<div class="cat-scat">
-      <%= if @cat != nil do %>
-      <div class="categorie"> <h1><%= @cat %></h1> </div>
-        <%= if @souscat != nil do %>
-        <div class="souscategorie">
-          <h2>Sous-catégories</h2>
-          <div class="liste">
-          <%= for souscategorie <- @souscategories do %>
-            <%= for categorie <- @categories do %>
-              <%= if souscategorie.id_cat == categorie.id_cat do %>
-                <%= if categorie.nom_cat == @cat do %>
-                <div class="list-soucat">
-                  <ul>
-                    <li><a href="/produit/<%= categorie.nom_cat %>/<%= souscategorie.nom_souscat %>"><%= souscategorie.nom_souscat %></a></li>
-                  </ul>
-                </div>
-                <% end %>
-              <% end %>
-            <% end %>
-          <% end %>
-          </div>
-        </div>
-        <% end %>
-        </div>
-      <% end %>-->
       <center>
         <a phx-click="previous_page" phx-value-idprev="<%= @first_row_id %>" phx-value-page="<%= @page %>" phx-value-cat="<%= @cat %>" phx-value-souscat="<%= @souscat %>" phx-value-search="<%= @search %>" phx-value-tri="<%= @tri_select %>"><i class="fas fa-angle-double-left"></i></a>
           <%= @page %>
