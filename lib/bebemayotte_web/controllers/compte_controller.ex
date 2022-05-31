@@ -300,9 +300,9 @@ defmodule BebemayotteWeb.CompteController do
       pbx_rang = "01" #"32"
       pbx_identifiant = "122909322" #"123456789"
       # total = "200"
-      total = prix_remise |> to_string()
+      tot = Float.floor(prix_remise, 4)
+      total = tot |> to_string()
       # // Suppression des points ou virgules dans le montant
-
       pbx_total = total |> String.replace(",", "") |> String.replace(".", "")
 
       pbx_cmd = num_commande
