@@ -20,7 +20,8 @@ config :bebemayotte, Bebemayotte.EBPRepo,
   database: "BB_MAY_0895452f-b7c1-4c00-a316-c6a6d0ea4bf4",
   hostname: "193.253.109.15:3390",
   instance: "EBP",
-  port: 53735,
+  #port: 53735,
+  port: 1433,
   odbc_driver: "{SQL Server Native Client 11.0}",
   pool_size: 10
 
