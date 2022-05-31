@@ -67,7 +67,11 @@
       <div class="article">
           <%= for produit <- @produits do %>
             <div class="produit">
-              <a class="produit_a" href="/show_produit/<%= produit.id_produit %>">
+            <%= for categorie <- @categories do %>
+            <%= for souscategorie <- @souscategories do %>
+            <%= if produit.id_cat == categorie.id_cat && produit.id_souscat == souscategorie.id_souscat do %>
+              <a class="produit_a" href="/produit/<%= categorie.nom_cat %>/<%= souscategorie.nom_souscat %>/<%= produit.id_produit %>">
+              <!--<a class="produit_a" href="/show_produit/<%= produit.id_produit %>">-->
                 <%= if produit.photolink == "#{produit.id_produit}-0.JPG" do %>
                   <div class="imge">
                     <img src="<%= Routes.static_path(@socket, "/images/empty.png") %>" href="/show_produit/<%= produit.id_produit %>">
@@ -93,6 +97,9 @@
                 </div>
               </a>
             </div>
+          <% end %>
+          <% end %>
+          <% end %>
         <% end %>
       </div>
     <center>
