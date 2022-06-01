@@ -9,22 +9,22 @@ defmodule Bebemayotte.TriRequette do
       "1" ->
         from p in Produit,
           select: p,
-          limit: 20,
+          limit: 15,
           order_by: [asc: p.id_produit]
       "2" ->
         from p in Produit,
           select: p,
-          limit: 20,
+          limit: 15,
           order_by: [asc: p.price]
       "3" ->
         from p in Produit,
           select: p,
-          limit: 20,
+          limit: 15,
           order_by: [desc: p.price]
       "4" ->
         from p in Produit,
           select: p,
-          limit: 20,
+          limit: 15,
           order_by: [asc: p.id]
     end
   end
@@ -36,25 +36,25 @@ defmodule Bebemayotte.TriRequette do
         from p in Produit,
           where: p.id_produit > ^valeur_triage,
           select: p,
-          limit: 20,
+          limit: 15,
           order_by: [asc: p.id_produit]
       "2" ->
         from p in Produit,
           where: p.price > ^valeur_triage,
           select: p,
-          limit: 20,
+          limit: 15,
           order_by: [asc: p.price]
       "3" ->
         from p in Produit,
           where: p.price < ^valeur_triage,
           select: p,
-          limit: 20,
+          limit: 15,
           order_by: [desc: p.price]
       "4" ->
         from p in Produit,
           where: p.id > ^valeur_triage,
           select: p,
-          limit: 20,
+          limit: 15,
           order_by: [asc: p.id]
     end
   end
@@ -66,25 +66,25 @@ defmodule Bebemayotte.TriRequette do
         from p in Produit,
           where: p.id_produit < ^valeur_triage,
           select: p,
-          limit: 20,
+          limit: 15,
           order_by: [desc: p.id_produit]
       "2" ->
         from p in Produit,
           where: p.price < ^valeur_triage,
           select: p,
-          limit: 20,
+          limit: 15,
           order_by: [desc: p.price]
       "3" ->
         from p in Produit,
           where: p.price > ^valeur_triage,
           select: p,
-          limit: 20,
+          limit: 15,
           order_by: [asc: p.price]
       "4" ->
         from p in Produit,
           where: p.id < ^valeur_triage,
           select: p,
-          limit: 20,
+          limit: 15,
           order_by: [desc: p.id]
     end
   end
@@ -99,25 +99,25 @@ defmodule Bebemayotte.TriRequette do
         from p in Produit,
           where: p.id_cat == ^id_cat,
           select: p,
-          limit: 20,
+          limit: 15,
           order_by: [asc: p.id_produit]
       "2" ->
         from p in Produit,
           where: p.id_cat == ^id_cat,
           select: p,
-          limit: 20,
+          limit: 15,
           order_by: [asc: p.price]
       "3" ->
         from p in Produit,
           where: p.id_cat == ^id_cat,
           select: p,
-          limit: 20,
+          limit: 15,
           order_by: [desc: p.price]
       "4" ->
         from p in Produit,
           where: p.id_cat == ^id_cat,
           select: p,
-          limit: 20,
+          limit: 15,
           order_by: [asc: p.id]
     end
   end
@@ -129,25 +129,25 @@ defmodule Bebemayotte.TriRequette do
         from p in Produit,
           where: p.id_produit > ^valeur_triage and p.id_cat == ^id_cat,
           select: p,
-          limit: 20,
+          limit: 15,
           order_by: [asc: p.id_produit]
       "2" ->
         from p in Produit,
           where: p.price > ^valeur_triage and p.id_cat == ^id_cat,
           select: p,
-          limit: 20,
+          limit: 15,
           order_by: [asc: p.price]
       "3" ->
         from p in Produit,
           where: p.price < ^valeur_triage and p.id_cat == ^id_cat,
           select: p,
-          limit: 20,
+          limit: 15,
           order_by: [desc: p.price]
       "4" ->
         from p in Produit,
           where: p.id > ^valeur_triage and p.id_cat == ^id_cat,
           select: p,
-          limit: 20,
+          limit: 15,
           order_by: [asc: p.id]
     end
   end
@@ -159,25 +159,25 @@ defmodule Bebemayotte.TriRequette do
         from p in Produit,
           where: p.id_produit < ^valeur_triage and p.id_cat == ^id_cat,
           select: p,
-          limit: 20,
+          limit: 15,
           order_by: [desc: p.id_produit]
       "2" ->
         from p in Produit,
           where: p.price < ^valeur_triage and p.id_cat == ^id_cat,
           select: p,
-          limit: 20,
+          limit: 15,
           order_by: [desc: p.price]
       "3" ->
         from p in Produit,
           where: p.price > ^valeur_triage and p.id_cat == ^id_cat,
           select: p,
-          limit: 20,
+          limit: 15,
           order_by: [asc: p.price]
       "4" ->
         from p in Produit,
           where: p.id < ^valeur_triage and p.id_cat == ^id_cat,
           select: p,
-          limit: 20,
+          limit: 15,
           order_by: [desc: p.id]
     end
   end
@@ -191,25 +191,25 @@ defmodule Bebemayotte.TriRequette do
         from p in Produit,
           where: p.id_souscat == ^id_souscat,
           select: p,
-          limit: 20,
+          limit: 15,
           order_by: [asc: p.id_produit]
       "2" ->
         from p in Produit,
           where: p.id_souscat == ^id_souscat,
           select: p,
-          limit: 20,
+          limit: 15,
           order_by: [asc: p.price]
       "3" ->
         from p in Produit,
           where: p.id_souscat == ^id_souscat,
           select: p,
-          limit: 20,
+          limit: 15,
           order_by: [desc: p.price]
       "4" ->
         from p in Produit,
           where: p.id_souscat == ^id_souscat,
           select: p,
-          limit: 20,
+          limit: 15,
           order_by: [asc: p.id]
     end
   end
@@ -221,25 +221,25 @@ defmodule Bebemayotte.TriRequette do
         from p in Produit,
           where: p.id_produit > ^valeur_triage and p.id_souscat == ^id_souscat,
           select: p,
-          limit: 20,
+          limit: 15,
           order_by: [asc: p.id_produit]
       "2" ->
         from p in Produit,
           where: p.price > ^valeur_triage and p.id_souscat == ^id_souscat,
           select: p,
-          limit: 20,
+          limit: 15,
           order_by: [asc: p.price]
       "3" ->
         from p in Produit,
           where: p.price < ^valeur_triage and p.id_souscat == ^id_souscat,
           select: p,
-          limit: 20,
+          limit: 15,
           order_by: [desc: p.title]
       "4" ->
         from p in Produit,
           where: p.id > ^valeur_triage and p.id_souscat == ^id_souscat,
           select: p,
-          limit: 20,
+          limit: 15,
           order_by: [asc: p.id]
     end
   end
@@ -251,31 +251,28 @@ defmodule Bebemayotte.TriRequette do
         from p in Produit,
           where: p.id_produit < ^valeur_triage and p.id_souscat == ^id_souscat,
           select: p,
-          limit: 20,
+          limit: 15,
           order_by: [desc: p.id_produit]
       "2" ->
         from p in Produit,
           where: p.price < ^valeur_triage and p.id_souscat == ^id_souscat,
           select: p,
-          limit: 20,
+          limit: 15,
           order_by: [desc: p.price]
       "3" ->
         from p in Produit,
           where: p.price > ^valeur_triage and p.id_souscat == ^id_souscat,
           select: p,
-          limit: 20,
+          limit: 15,
           order_by: [asc: p.price]
       "4" ->
         from p in Produit,
           where: p.id < ^valeur_triage and p.id_souscat == ^id_souscat,
           select: p,
-          limit: 20,
+          limit: 15,
           order_by: [desc: p.id]
     end
   end
-
-
-
 
 #-------------------------------------------------------------------------------------------------------------
   # SEARCH
@@ -286,25 +283,25 @@ defmodule Bebemayotte.TriRequette do
         from p in Produit,
           where: p.id_produit in ^list_id_produit,
           select: p,
-          limit: 20,
+          limit: 15,
           order_by: [asc: p.id_produit]
       "2" ->
         from p in Produit,
           where: p.id_produit in ^list_id_produit,
           select: p,
-          limit: 20,
+          limit: 15,
           order_by: [asc: p.price]
       "3" ->
         from p in Produit,
           where: p.id_produit in ^list_id_produit,
           select: p,
-          limit: 20,
+          limit: 15,
           order_by: [desc: p.price]
       "4" ->
         from p in Produit,
           where: p.id_produit in ^list_id_produit,
           select: p,
-          limit: 20,
+          limit: 15,
           order_by: [asc: p.id]
     end
   end
@@ -316,25 +313,25 @@ defmodule Bebemayotte.TriRequette do
         from p in Produit,
           where: p.id_produit > ^valeur_triage and p.id_produit in ^list_id_produit,
           select: p,
-          limit: 20,
+          limit: 15,
           order_by: [asc: p.id_produit]
       "2" ->
         from p in Produit,
           where: p.price > ^valeur_triage and p.id_produit in ^list_id_produit,
           select: p,
-          limit: 20,
+          limit: 15,
           order_by: [asc: p.price]
       "3" ->
         from p in Produit,
           where: p.price < ^valeur_triage and p.id_produit in ^list_id_produit,
           select: p,
-          limit: 20,
+          limit: 15,
           order_by: [desc: p.price]
       "4" ->
         from p in Produit,
           where: p.id > ^valeur_triage and p.id_produit in ^list_id_produit,
           select: p,
-          limit: 20,
+          limit: 15,
           order_by: [asc: p.id]
     end
   end
@@ -346,25 +343,25 @@ defmodule Bebemayotte.TriRequette do
         from p in Produit,
           where: p.id_produit < ^valeur_triage and p.id_produit in ^list_id_produit,
           select: p,
-          limit: 20,
+          limit: 15,
           order_by: [desc: p.id_produit]
       "2" ->
         from p in Produit,
           where: p.price < ^valeur_triage and p.id_produit in ^list_id_produit,
           select: p,
-          limit: 20,
+          limit: 15,
           order_by: [desc: p.price]
       "3" ->
         from p in Produit,
           where: p.price > ^valeur_triage and p.id_produit in ^list_id_produit,
           select: p,
-          limit: 20,
+          limit: 15,
           order_by: [asc: p.price]
       "4" ->
         from p in Produit,
           where: p.id < ^valeur_triage and p.id_produit in ^list_id_produit,
           select: p,
-          limit: 20,
+          limit: 15,
           order_by: [desc: p.id]
     end
   end
