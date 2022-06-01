@@ -62,10 +62,6 @@
                 <button type="submit" class="loupe"><i class="fas fa-search "></i></button>
             </form>
           </div>
-          <!--<div class="icones">
-            <a href="/panier"><i  class='fas fa-shopping-cart'>&#xe057;</i></a>
-            <a href="/question"><i  class='fas question'>&#xf059;</i></a>
-          </div>-->
         </div>
       </div>
       <div class="header-item" id="main-nav">
@@ -79,16 +75,7 @@
               <% end %>
             </div>
           </li>
-         <!-- <li class="menu-item">
-            <a href="/produit" class="nav-link">Boutique</a>
-            <ul>
-
-            </ul>
-          </li>
-          <li class="menu-item"><a href="/" class="nav-link">Accueil</a></li>
-          <li class="menu-item"><a href="/contact" class="nav-link">Contact</a></li>
-          <li class="menu-item"><a href="/question" class="nav-link">Qu'en pensez-vous?</a></li>
-       --> </ul>
+         </ul>
         <div class="hamburger">
           <span class="bar"></span>
           <span class="bar"></span>
@@ -146,6 +133,7 @@
         </div>
       </div>
     </div>
+    <div class="copyright"><p>bbmay.fr | Designed by MGBI | © 2022 </p></div>
     </footer>
   </body>
    <script>
@@ -197,19 +185,6 @@
       }
     }
   </script>
-  <!--<script>
-    const el = document.getElementById('menu');
-    const hiddenEl = document.getElementById('hidden');
-
-    el.addEventListener('mouseover', function handleMouseOver() {
-      hiddenEl.style.display = 'block';
-    });
-
-    el.addEventListener('mouseout', function handleMouseOut() {
-      hiddenEl.style.display = 'none';
-    });
-
-  </script>-->
   <script defer type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
 
   <script
