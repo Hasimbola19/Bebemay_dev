@@ -285,14 +285,14 @@ defmodule BebemayotteWeb.CompteController do
       details = id |> Fonction.detail_commande_show(paniers, quantites)
       prix_total = details |> Fonction.get_prix_total()
       remise = Float.round((prix_total * 5)/100, 2)
-      prix_remise = prix_total - remise
+      # prix_remise = prix_total - remise
       num_commande = id |> Fonction.fn_2()
       date = NaiveDateTime.local_now() |> NaiveDateTime.to_date()
       mail = UserRequette.get_user_email_by_id(id)
 
       commande = %{
         "numero" => num_commande,
-        "total" => prix_remise,
+        "total" => prix_total,
         "date" => date
       }
 
@@ -300,10 +300,12 @@ defmodule BebemayotteWeb.CompteController do
       pbx_rang = "01" #"32"
       pbx_identifiant = "122909322" #"123456789"
       # total = "200"
-      tot = Float.floor(prix_remise, 4)
+      tot = Float.floor(prix_total, 2)
       total = tot |> to_string()
-      # // Suppression des points ou virgules dans le montant
-      pbx_total = total |> String.replace(",", "") |> String.replace(".", "")
+      IO.puts "TOOOOOOOOOOOOTTTTTTTTTTTTAAAAAAAAAAAALLLLLLLLLL"
+      # IO.inspect "#{total}0"
+      IO.puts "LLLLOOOOONNNNNNNNNNNNGGGGGGGGG"
+      IO.inspect String.length(total)
 
       pbx_cmd = num_commande
       pbx_porteur = mail
@@ -366,7 +368,14 @@ defmodule BebemayotteWeb.CompteController do
           "<City>#{pbx_city_fact}</City><CountryCode>#{pbx_country_fact}</CountryCode>"<>""<>
           "</Address></Billing>"
 
-      msg = "PBX_SITE=#{pbx_site}"<>""<>
+      hmackey = "56A05997B9149BFDE3B07BEAFC2BD55FE50321CF3CF5A6623E727A4124CB0999D9590C6D02E036365363E746FE34C3F04F80EF110ABE294A9CD3877F36B38BAE"
+        # "0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF"
+
+      binkey = hmackey |> Base.decode16!()
+
+      if String.length(total) <= 4 do
+        pbx_total = "#{total}0" |> String.replace(",", "") |> String.replace(".", "")
+        msg = "PBX_SITE=#{pbx_site}"<>""<>
         "&PBX_RANG=#{pbx_rang}"<>""<>
         "&PBX_IDENTIFIANT=#{pbx_identifiant}"<>""<>
         "&PBX_TOTAL=#{pbx_total}"<>""<>
@@ -383,22 +392,41 @@ defmodule BebemayotteWeb.CompteController do
         "&PBX_SHOPPINGCART=#{pbx_shoppingcart}"<>""<>
         "&PBX_BILLING=#{pbx_billing}"
 
-      hmackey = "56A05997B9149BFDE3B07BEAFC2BD55FE50321CF3CF5A6623E727A4124CB0999D9590C6D02E036365363E746FE34C3F04F80EF110ABE294A9CD3877F36B38BAE"
-        # "0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF"
+        hmac = :crypto.mac(:hmac, :sha512, binkey, msg)
+        |> Base.encode16()
+        |> String.upcase()
 
-      binkey = hmackey |> Base.decode16!()
-
-      hmac = :crypto.mac(:hmac, :sha512, binkey, msg)
-            |> Base.encode16()
-            |> String.upcase()
-
-
-      if prix_total == nil do
-        render(conn,"validation.html",
+        if prix_total == nil do
+          render(conn,"validation.html",
+            categories: categories,
+            commande: commande,
+            search: nil,
+            statut_commande: 0,
+            pbx_site: pbx_site,
+            pbx_rang: pbx_rang,
+            pbx_identifiant: pbx_identifiant,
+            pbx_total: pbx_total,
+            pbx_cmd: pbx_cmd,
+            pbx_porteur: pbx_porteur,
+            pbx_repondre_a: pbx_repondre_a,
+            pbx_retour: pbx_retour,
+            pbx_effectue: pbx_effectue,
+            pbx_annule: pbx_annule,
+            pbx_refuse: pbx_refuse,
+            pbx_hash: pbx_hash,
+            pbx_time: pbx_time,
+            pbx_shoppingcart: pbx_shoppingcart,
+            pbx_billing: pbx_billing,
+            hmac: hmac,
+            msg: msg,
+            urletrans: urletrans
+          )
+        else
+          render(conn,"validation.html",
           categories: categories,
           commande: commande,
           search: nil,
-          statut_commande: 0,
+          statut_commande: 1,
           pbx_site: pbx_site,
           pbx_rang: pbx_rang,
           pbx_identifiant: pbx_identifiant,
@@ -417,33 +445,85 @@ defmodule BebemayotteWeb.CompteController do
           hmac: hmac,
           msg: msg,
           urletrans: urletrans
-         )
+          )
+        end
       else
-        render(conn,"validation.html",
-        categories: categories,
-        commande: commande,
-        search: nil,
-        statut_commande: 1,
-        pbx_site: pbx_site,
-        pbx_rang: pbx_rang,
-        pbx_identifiant: pbx_identifiant,
-        pbx_total: pbx_total,
-        pbx_cmd: pbx_cmd,
-        pbx_porteur: pbx_porteur,
-        pbx_repondre_a: pbx_repondre_a,
-        pbx_retour: pbx_retour,
-        pbx_effectue: pbx_effectue,
-        pbx_annule: pbx_annule,
-        pbx_refuse: pbx_refuse,
-        pbx_hash: pbx_hash,
-        pbx_time: pbx_time,
-        pbx_shoppingcart: pbx_shoppingcart,
-        pbx_billing: pbx_billing,
-        hmac: hmac,
-        msg: msg,
-        urletrans: urletrans
-        )
+        pbx_total = total |> String.replace(",", "") |> String.replace(".", "")
+        msg = "PBX_SITE=#{pbx_site}"<>""<>
+        "&PBX_RANG=#{pbx_rang}"<>""<>
+        "&PBX_IDENTIFIANT=#{pbx_identifiant}"<>""<>
+        "&PBX_TOTAL=#{pbx_total}"<>""<>
+        "&PBX_DEVISE=978"<>""<>
+        "&PBX_CMD=#{pbx_cmd}"<>""<>
+        "&PBX_PORTEUR=#{pbx_porteur}"<>""<>
+        "&PBX_REPONDRE_A=#{pbx_repondre_a}"<>""<>
+        "&PBX_RETOUR=#{pbx_retour}"<>""<>
+        "&PBX_EFFECTUE=#{pbx_effectue}"<>""<>
+        "&PBX_ANNULE=#{pbx_annule}"<>""<>
+        "&PBX_REFUSE=#{pbx_refuse}"<>""<>
+        "&PBX_HASH=SHA512"<>""<>
+        "&PBX_TIME=#{pbx_time}"<>""<>
+        "&PBX_SHOPPINGCART=#{pbx_shoppingcart}"<>""<>
+        "&PBX_BILLING=#{pbx_billing}"
+
+        hmac = :crypto.mac(:hmac, :sha512, binkey, msg)
+        |> Base.encode16()
+        |> String.upcase()
+
+        if prix_total == nil do
+          render(conn,"validation.html",
+            categories: categories,
+            commande: commande,
+            search: nil,
+            statut_commande: 0,
+            pbx_site: pbx_site,
+            pbx_rang: pbx_rang,
+            pbx_identifiant: pbx_identifiant,
+            pbx_total: pbx_total,
+            pbx_cmd: pbx_cmd,
+            pbx_porteur: pbx_porteur,
+            pbx_repondre_a: pbx_repondre_a,
+            pbx_retour: pbx_retour,
+            pbx_effectue: pbx_effectue,
+            pbx_annule: pbx_annule,
+            pbx_refuse: pbx_refuse,
+            pbx_hash: pbx_hash,
+            pbx_time: pbx_time,
+            pbx_shoppingcart: pbx_shoppingcart,
+            pbx_billing: pbx_billing,
+            hmac: hmac,
+            msg: msg,
+            urletrans: urletrans
+          )
+        else
+          render(conn,"validation.html",
+          categories: categories,
+          commande: commande,
+          search: nil,
+          statut_commande: 1,
+          pbx_site: pbx_site,
+          pbx_rang: pbx_rang,
+          pbx_identifiant: pbx_identifiant,
+          pbx_total: pbx_total,
+          pbx_cmd: pbx_cmd,
+          pbx_porteur: pbx_porteur,
+          pbx_repondre_a: pbx_repondre_a,
+          pbx_retour: pbx_retour,
+          pbx_effectue: pbx_effectue,
+          pbx_annule: pbx_annule,
+          pbx_refuse: pbx_refuse,
+          pbx_hash: pbx_hash,
+          pbx_time: pbx_time,
+          pbx_shoppingcart: pbx_shoppingcart,
+          pbx_billing: pbx_billing,
+          hmac: hmac,
+          msg: msg,
+          urletrans: urletrans
+          )
+        end
       end
+      # // Suppression des points ou virgules dans le montant
+
     end
   #def valid_pay_command(conn,)
 
