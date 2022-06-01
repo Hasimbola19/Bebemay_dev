@@ -56,17 +56,17 @@
                             <td class="title-left">SOUS-TOTAL</td>
                             <td>€<%= @somme %></td>
                         </tr>
-                        <tr class="total">
+                        <!--<tr class="total">
                             <td class="title-left">REMISE DE 5%</td>
                             <td>- €<%= Float.round((@somme * 5)/100, 2) %></td>
-                        </tr>
+                        </tr>-->
                         <tr class="total">
                             <td class="title-left">EXPEDITION</td>
                             <td>Calculer les frais d'expédition</td>
                         </tr>
                         <tr class="total">
                             <td class="title-left">TOTAL</td>
-                            <td>€<%= Float.round(@somme - ((@somme * 5)/100), 2) %></td>
+                            <td>€<%= Float.round(@somme, 2) %></td>
                         </tr>
                     </tbody>
                     <caption>
