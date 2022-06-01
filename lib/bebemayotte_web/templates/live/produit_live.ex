@@ -7,7 +7,7 @@ defmodule BebemayotteWeb.Live.ProduitLive do
   alias Bebemayotte.PanierRequette
 
   def mount(_params, %{"id_session" => session, "user" => user, "cat" => cat, "souscat" => souscat, "search" => search}, socket) do
-    categories = CatRequette.get_all_categorie()
+    Task.async(fn -> categories = CatRequette.get_all_categorie()
     souscategories = SouscatRequette.get_all_souscategorie()
     {produits, nb_ligne} = filtre(cat, souscat, search, "1")
     nb_total = produits |> Enum.count()
@@ -23,6 +23,7 @@ defmodule BebemayotteWeb.Live.ProduitLive do
                       page: 1, cat: cat, souscat: souscat, tri_select: "1"),
      layout: {BebemayotteWeb.LayoutView, "layout_live.html"}
     }
+  end) |> Task.await()
   end
 
   def handle_event("add_panier", params, socket) do
