@@ -47,7 +47,6 @@
           <form method="post" action="/validation_command">
             <input type="hidden" name="_csrf_token" value="<%= Plug.CSRFProtection.get_csrf_token()%>">
           </form>
-      <p><%= @msg %></p>
       </div>
   <% else %>
       <div class="validation_commande">
