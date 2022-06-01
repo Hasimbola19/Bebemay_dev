@@ -23,10 +23,10 @@
                     <th scope="row" colspan="2" >SOUS TOTAL:</th>
                     <td class="commande"><%= @prix_total %></td>
                 </tr>
-                <tr>
+                <!--<tr>
                     <th scope="row" colspan="2">REMISE:</th>
                     <td class="commande"><%= @remise %></td>
-                </tr>
+                </tr>-->
                 <tr>
                     <th scope="row" colspan="2">EXPÉDITION:</th>
                     <th>Récupérer en boutique ( 0€ de frais).
@@ -40,7 +40,7 @@
                 </tr>
                 <tr>
                     <th scope="row" colspan="2">TOTAL :</th>
-                    <th><%= @prix_remise %></th>
+                    <th><%= @prix_total %></th>
                 </tr>
             </tfoot>
         </table>
