@@ -338,7 +338,7 @@ pre{padding: 1em;}
   padding: 5.5px 20px 5.5px 5.5px;
   /* padding-left: 20px; */
   /* position: relative; */
-  width: 350px;
+  width: 250px;
   border: none;
   text-align: left;
   outline: none;
@@ -378,7 +378,7 @@ pre{padding: 1em;}
 
 .pane .lis{
   color: #000;
-  padding: 10px 15px 10px 15px;
+  /*padding: 10px 15px 10px 15px;*/
 }
 
 .pane .lis:hover{
@@ -638,6 +638,7 @@ img {vertical-align: middle;}
 @media only screen and (max-width: 1367px){
   .row.product{
     padding-top: 170px;
+    margin-top: 150px;
   }
 }
 @media only screen and (max-width: 1280px){
@@ -1991,7 +1992,7 @@ header nav a {
 
 .row.product{
   margin:0 2rem 0 0 ;
-  padding: 10% 0;
+  /*padding: 10% 0;*/
 }
 
  .accordion-item{
