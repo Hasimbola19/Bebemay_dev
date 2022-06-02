@@ -11,15 +11,19 @@ defmodule BebemayotteWeb.Live.ProduitLive do
     souscategories = SouscatRequette.get_all_souscategorie()
     {produits, nb_ligne} = filtre(cat, souscat, search, "1")
     nb_total = produits |> Enum.count()
+    IO.inspect user
     {first_row_id, last_row_id} = if_vide_produits(produits, nb_total)
     nb_page = nb_ligne |> nombre_page()
     #SyncDb.subscribe()
+
+    IO.puts "SOCKET"
+    IO.inspect socket
 
     {:ok,
      socket
       |> assign(categories: categories, souscategories: souscategories)
       |> assign(produits: produits,last_row_id: last_row_id, first_row_id: first_row_id,
-                      user: nil, search: search, user: user, session: session, nb_page: nb_page,
+                      search: search, user: user, session: session, nb_page: nb_page,
                       page: 1, cat: cat, souscat: souscat, tri_select: "1"),
      layout: {BebemayotteWeb.LayoutView, "layout_live.html"}
     }
