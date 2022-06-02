@@ -13,7 +13,7 @@ defmodule BebemayotteWeb.Live.ProduitLive do
     nb_total = produits |> Enum.count()
     {first_row_id, last_row_id} = if_vide_produits(produits, nb_total)
     nb_page = nb_ligne |> nombre_page()
-    user = 0
+    user = nil
     SyncDb.subscribe()
 
     {:ok,
