@@ -6,15 +6,14 @@ defmodule BebemayotteWeb.Live.ProduitLive do
   alias Bebemayotte.SyncDb
   alias Bebemayotte.PanierRequette
 
-  def mount(_params, %{"id_session" => session, "user" => user, "cat" => cat, "souscat" => souscat, "search" => search}, socket) do
-    IO.puts "USSSSEEEEEERRRRRR"
-    IO.inspect user
-    Task.async(fn -> categories = CatRequette.get_all_categorie()
+  def mount(_params, %{"id_session" => session,"cat" => cat, "souscat" => souscat, "search" => search}, socket) do
+    categories = CatRequette.get_all_categorie()
     souscategories = SouscatRequette.get_all_souscategorie()
     {produits, nb_ligne} = filtre(cat, souscat, search, "1")
     nb_total = produits |> Enum.count()
     {first_row_id, last_row_id} = if_vide_produits(produits, nb_total)
     nb_page = nb_ligne |> nombre_page()
+    user = 0
     SyncDb.subscribe()
 
     {:ok,
@@ -25,7 +24,6 @@ defmodule BebemayotteWeb.Live.ProduitLive do
                       page: 1, cat: cat, souscat: souscat, tri_select: "1"),
      layout: {BebemayotteWeb.LayoutView, "layout_live.html"}
     }
-  end) |> Task.await()
   end
 
   def handle_event("add_panier", params, socket) do
