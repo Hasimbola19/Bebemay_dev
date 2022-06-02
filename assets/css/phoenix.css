@@ -640,6 +640,10 @@ img {vertical-align: middle;}
     padding-top: 170px;
     margin-top: 150px;
   }
+  .all .navig{
+    margin-left: 50px;
+    margin-top: 10px;
+  }
 }
 @media only screen and (max-width: 1280px){
   .head .header{
@@ -2094,7 +2098,7 @@ label {
 
 .all .navig{
   margin-left: 50px;
-  margin-top: 10px;
+  margin-top: 20px;
 }
 
 .all .navig a {
