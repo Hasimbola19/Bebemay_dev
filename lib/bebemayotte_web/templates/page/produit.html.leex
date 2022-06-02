@@ -73,7 +73,7 @@
                   <%= if produit.stockstatus do %>
                     <h4 class="prix">€<%= Decimal.round(produit.price,2) %></h4>
                     <a class="ajout" onclick="add_panier('<%= produit.id_produit %>')">
-                      <i class="fas fa-shopping-cart">&#xe057;</i>
+                      <i class="fas fa-shopping-cart"></i>
                     </a>
                   <% else %>
                     <h3 class="">RUPTURE DE STOCK</h3>
