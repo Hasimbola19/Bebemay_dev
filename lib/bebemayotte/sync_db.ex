@@ -327,7 +327,7 @@ defmodule Bebemayotte.SyncDb do
         del_prod()
         delete("ItemFamily" , Categorie)
         delete("ItemSubFamily" , Souscategorie)
-        #broadcast_change({:ok, %{}}, "synchro")
+        broadcast_change({:ok, %{}}, "synchro")
         sync()
     end
   end
