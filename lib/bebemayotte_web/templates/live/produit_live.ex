@@ -7,17 +7,15 @@ defmodule BebemayotteWeb.Live.ProduitLive do
   alias Bebemayotte.PanierRequette
 
   def mount(_params, %{"id_session" => session, "user" => user, "cat" => cat, "souscat" => souscat, "search" => search}, socket) do
+    IO.puts "USSSSEEEEEERRRRRR"
+    IO.inspect user
     Task.async(fn -> categories = CatRequette.get_all_categorie()
     souscategories = SouscatRequette.get_all_souscategorie()
     {produits, nb_ligne} = filtre(cat, souscat, search, "1")
     nb_total = produits |> Enum.count()
-    IO.inspect user
     {first_row_id, last_row_id} = if_vide_produits(produits, nb_total)
     nb_page = nb_ligne |> nombre_page()
-    #SyncDb.subscribe()
-
-    IO.puts "SOCKET"
-    IO.inspect socket
+    SyncDb.subscribe()
 
     {:ok,
      socket
