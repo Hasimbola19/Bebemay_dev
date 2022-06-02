@@ -2091,6 +2091,23 @@ label {
   width:100%;
   height: auto;
 } 
+
+.all .navig{
+  margin-left: 50px;
+  margin-top: 10px;
+}
+
+.all .navig a {
+  font-size: 15px;
+  color: #000;
+}
+
+.all .navig a:hover{
+  color: #0010bb;
+  text-decoration: underline;
+  font-weight: bold;
+}
+
 .article{
   padding-top: 15px;
   display:grid;
@@ -2101,7 +2118,7 @@ label {
   .article{
     display: grid;
     grid-template-columns: 19% 19% 19% 19% 19%;
-    margin: 25px 5px 0px 30px;
+    /*: 25px 5px 0px 30px;*/
   } 
 }
 @media screen and (max-width:1000px) 
