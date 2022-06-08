@@ -39,6 +39,11 @@ defmodule Bebemayotte.SyncDb do
     if x == nil, do: "#{x_id}-0.JPG", else:  Base.encode64(x)
   end
 
+  def del_pro do
+    Repo.delete_all(Produit)
+    File.rm(Path.expand("assets/static/uploads/"))
+  end
+
   # COMPARE THE VALUES FROM POSTGRES AND SQL SERVER DATABASES
 
   # TABLE CATEGORIES
@@ -96,11 +101,13 @@ defmodule Bebemayotte.SyncDb do
           # {:ok, stock_reel} = Enum.fetch(c, 7)
           # IO.inspect(stock_max)
 
+          File.write(Path.expand("assets/static/images/uploads/#{prod_id}.jpeg"), photo, [:binary])
+
           # if afficher == true do
             params = %{
               "id_produit" => prod_id,
               "title" => capt,
-              "photolink" => condition_image(photo, prod_id),
+              "photolink" => "/images/uploads/#{prod_id}.jpeg",
               "id_cat" => cat_id,
               "id_souscat" => souscat_id,
               "stockstatus" => condition_stock(stock_max),
@@ -131,13 +138,15 @@ defmodule Bebemayotte.SyncDb do
           {:ok, stock_max} = Enum.fetch(c, 6)
           # {:ok, stock_reel} = Enum.fetch(c, 7)
 
+          File.write(Path.expand("assets/static/images/uploads/#{prod_id}.jpeg"), photo, [:binary])
+
           IO.inspect(stock_max)
 
           # if afficher == 1 do
             params = %{
               "id_produit" => prod_id,
               "title" => capt,
-              "photolink" => condition_image(photo, prod_id),
+              "photolink" => "/images/uploads/#{prod_id}.jpeg",
               "id_cat" => cat_id,
               "id_souscat" => souscat_id,
               "stockstatus" => condition_stock(stock_max),
@@ -198,7 +207,33 @@ defmodule Bebemayotte.SyncDb do
     end
   end
 
-  defp si_pareil(obj_origin, line_name, line_EBP, line_PGSQL, obj) do
+  defp si_pareil(obj_origin, line_name, line_EBP, line_PGSQL, obj, prod_id, photo) do
+    if line_EBP != line_PGSQL do
+      params = %{
+        "#{line_name}" => line_EBP
+      }
+      Repo.update(obj_origin.changeset(obj, params))
+      File.write(Path.expand("assets/static/images/uploads/#{prod_id}.jpeg"), photo, [:binary])
+      :ok
+    else
+      IO.puts("Valeurs egaux")
+    end
+  end
+
+  defp compare_allow(obj_origin, line_name, line_EBP, line_PGSQL, obj, prod_id) do
+    if line_EBP != line_PGSQL do
+      params = %{
+        "#{line_name}" => line_EBP
+      }
+      Repo.delete(obj_origin.changeset(obj, params))
+      File.rm(Path.expand("assets/static/images/uploads/#{prod_id}.jpeg"))
+      :ok
+    else
+      IO.puts("Valeurs egaux")
+    end
+  end
+
+  defp si_pareils(obj_origin, line_name, line_EBP, line_PGSQL, obj) do
     if line_EBP != line_PGSQL do
       params = %{
         "#{line_name}" => line_EBP
@@ -210,19 +245,7 @@ defmodule Bebemayotte.SyncDb do
     end
   end
 
-  defp compare_allow(obj_origin, line_name, line_EBP, line_PGSQL, obj) do
-    if line_EBP != line_PGSQL do
-      params = %{
-        "#{line_name}" => line_EBP
-      }
-      Repo.delete(obj_origin.changeset(obj, params))
-      :ok
-    else
-      IO.puts("Valeurs egaux")
-    end
-  end
-
-  defp mod_prod do
+  def mod_prod do
       {:ok, queri} = EBPRepo.query("SELECT Item.Id,Item.ItemImage,Item.SalePriceVatExcluded,Item.Caption,Item.AllowPublishOnWeb,StockItem.RealStock FROM Item LEFT JOIN StockItem ON Item.Id = StockItem.ItemId")
       for c <- queri.rows do
         # {:ok, cat_id} = Enum.fetch(c, 0)
@@ -238,21 +261,21 @@ defmodule Bebemayotte.SyncDb do
           produit = Repo.one(from p in Produit, where: p.id_produit == ^prod_id, select: p)
           if afficher == true do
             if produit != nil do
-              si_pareil(Produit, "photolink", condition_image(photo,prod_id), produit.photolink, produit)
-              si_pareil(Produit, "title", capt, produit.title, produit)
-              si_pareil(Produit, "stockstatus",condition_stock(stock_max), produit.stockstatus, produit)
-              si_pareil(Produit, "stockmax", stock_condition(stock_max), produit.stockmax, produit)
-              si_pareil(Produit, "price", prix, produit.price, produit)
+              si_pareil(Produit, "photolink", condition_image(photo,prod_id), produit.photolink, produit, prod_id, photo)
+              si_pareil(Produit, "title", capt, produit.title, produit, prod_id, photo)
+              si_pareil(Produit, "stockstatus",condition_stock(stock_max), produit.stockstatus, produit, prod_id, photo)
+              si_pareil(Produit, "stockmax", stock_condition(stock_max), produit.stockmax, produit, prod_id, photo)
+              si_pareil(Produit, "price", prix, produit.price, produit, prod_id, photo)
             else
               IO.puts("VALEUR NULLE")
             end
           else
             if produit != nil do
-              compare_allow(Produit, "photolink", condition_image(photo,prod_id), produit.photolink, produit)
-              compare_allow(Produit, "title", capt, produit.title, produit)
-              compare_allow(Produit, "stockstatus",condition_stock(stock_max), produit.stockstatus, produit)
-              compare_allow(Produit, "stockmax", stock_condition(stock_max), produit.stockmax, produit)
-              compare_allow(Produit, "price", prix, produit.price, produit)
+              compare_allow(Produit, "photolink", condition_image(photo,prod_id), produit.photolink, produit, prod_id)
+              compare_allow(Produit, "title", capt, produit.title, produit, prod_id)
+              compare_allow(Produit, "stockstatus",condition_stock(stock_max), produit.stockstatus, produit, prod_id)
+              compare_allow(Produit, "stockmax", stock_condition(stock_max), produit.stockmax, produit, prod_id)
+              compare_allow(Produit, "price", prix, produit.price, produit, prod_id)
             else
               IO.puts("VALEUR NULLE")
             end
@@ -260,7 +283,22 @@ defmodule Bebemayotte.SyncDb do
     end
   end
 
-  defp mod_sccat do
+  def get_image do
+    {:ok, query} = EBPRepo.query("SELECT Item.Id, Item.ItemImage FROM Item")
+
+    for c <- query.rows do
+      {:ok, prod_id} = Enum.fetch(c, 0)
+      {:ok, photo} = Enum.fetch(c, 1)
+
+      path = File.write(Path.absname("C:/Données/MGBI/Hasimbola/Bebemay_dev/priv/uploads/#{prod_id}.jpeg"), photo, [:binary])
+    # {:ok, data} = Base.decode64(condition_image(photo, prod_id))
+    # path = File.write!("#{List.to_string(:code.priv_dir(:bebemayotte))}/uploads/#{prod_id}.png", photo, [:binary])
+    #  path = File.write(Application.app_dir(:bebemayotte, Path.join("priv/uploads", "#{prod_id}.png")), photo, [:binary])
+      IO.inspect(path)
+    end
+  end
+
+  def mod_sccat do
     {:ok, souscategorie} = Ecto.Adapters.SQL.query(EBPRepo,"SELECT Id, Caption, ItemFamilyId FROM ItemSubFamily")
 
     for sc <- souscategorie.rows do
@@ -270,12 +308,12 @@ defmodule Bebemayotte.SyncDb do
 
         souscategories = Repo.one(from p in Souscategorie, where: p.id_souscat == ^subfamilyid, select: p)
         # si_pareil(Souscategorie, "id_souscat", subfamilyid, souscategories.id_souscat, souscategories)
-        si_pareil(Souscategorie, "nom_souscat", nom, souscategories.nom_souscat, souscategories)
+        si_pareils(Souscategorie, "nom_souscat", nom, souscategories.nom_souscat, souscategories)
         # si_pareil(Souscategorie, "id_cat", familyid, souscategories.id_cat, souscategories)
     end
   end
 
-  defp mod_cat do
+  def mod_cat do
     {:ok, queri} = EBPRepo.query("SELECT ItemFamily.Id,ItemFamily.Caption FROM ItemFamily")
     for c <- queri.rows do
       {:ok, cat_id} = Enum.fetch(c,0)
@@ -283,7 +321,7 @@ defmodule Bebemayotte.SyncDb do
 
       categories = Repo.one(from p in Categorie, where: p.id_cat == ^cat_id, select: p)
       # si_pareil(Categorie, "id_cat", cat_id, categories.id_cat, categories)
-      si_pareil(Categorie, "nom_cat", cat_nom, categories.nom_cat, categories)
+      si_pareils(Categorie, "nom_cat", cat_nom, categories.nom_cat, categories)
 
     end
   end
@@ -298,6 +336,7 @@ defmodule Bebemayotte.SyncDb do
 
     from(a in Produit, where: a.id_produit not in ^lis)
     |> Repo.delete_all
+    File.rm(Path.expand("priv/static/uploads/"))
   end
 
   defp delete(obj, eleme) do
@@ -327,7 +366,7 @@ defmodule Bebemayotte.SyncDb do
         del_prod()
         delete("ItemFamily" , Categorie)
         delete("ItemSubFamily" , Souscategorie)
-        broadcast_change({:ok, %{}}, "synchro")
+        #broadcast_change({:ok, %{}}, "synchro")
         sync()
     end
   end
