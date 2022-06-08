@@ -26,33 +26,20 @@ defmodule BebemayotteWeb.Live.ProduitLive do
   end
 
   def handle_event("add_panier", params, socket) do
-    IO.puts "SESSIONNNNNNNNNNNNNNNNNNNNNNN"
-
     id = params["id_produit"]
     session = socket.assigns.session
-    # IO.puts session
     panier = id |> PanierRequette.find_double_in_panier(session)
-    # last_row = PanierRequette.get_panier_last_row_id()
-    # id_user = session #|> String.to_integer()
-    # param = %{
-    #   "id_panier" => last_row,
-    #   "id_produit" => id,
-    #   "quantite" => 1,
-    #   "id_user" => id_user
-    # }
+    IO.inspect panier
     if panier == nil do
-      # param |> PanierRequette.insert_panier()
       message = "#{ProdRequette.get_nom_produit_by_id(id)} est parfaitement ajouté au panier."
       {:noreply, socket |> put_flash(:info, message)}
     else
-      # id |> PanierRequette.get_panier_by_id_produit_id_session(session) |> PanierRequette.update_panier_query(param)
       message = "#{ProdRequette.get_nom_produit_by_id(id)} est déja dans le panier!!!"
       {:noreply, socket |> put_flash(:info, message)}
     end
   end
 
   def handle_event("tri", params, socket) do
-    IO.inspect(socket)
     {produits, nb_ligne} = filtre(params["cat"], params["souscat"], params["search"], params["select-1"])
     nb_total = produits |> Enum.count()
     {first_row_id, last_row_id} = if_vide_produits(produits, nb_total)
@@ -88,12 +75,7 @@ defmodule BebemayotteWeb.Live.ProduitLive do
   end
 
   def handle_info({Bebemayotte, [_, _], _}, socket) do
-    IO.inspect(socket)
-    sync = Bebemayotte.SyncDb.sync()
-    IO.inspect(sync)
-    IO.puts("Aonnnnnnnnnnaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
-
-    # {:noreply, socket |> assign(tasks: sync)}
+    _sync = Bebemayotte.SyncDb.sync()
   end
 
   def render(assigns) do
