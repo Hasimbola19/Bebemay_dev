@@ -1,10 +1,19 @@
 <div class="product">
+<%= for categorie <- @categories do %>
+  <%= for souscategorie <- @souscategories do %>
+    <%= if @produit.id_cat == categorie.id_cat && @produit.id_souscat == souscategorie.id_souscat do %>
+      <div class="navigue">
+        <a href="/"> Accueil </a> / <a href="/produit"> Produits </a> / <a href="/produit/<%= categorie.nom_cat %>"> <%= categorie.nom_cat %> </a> / <a  href="/produit/<%= categorie.nom_cat %>/<%= souscategorie.nom_souscat %>"> <%= souscategorie.nom_souscat %> </a> / <a> <%= @produit.id_produit %> </a>
+      </div>
+    <% end %>
+  <% end %>
+<% end %>
     <div class="detail_produit">
         <div class="sary_produit">
             <%= if @produit.photolink == "#{@produit.id_produit}-0.JPG" do %>
                 <img src="<%= Routes.static_path(@socket, "/images/empty.png") %>" class="prod">
             <% else %>
-                <img src="data:image/png;base64, <%= @produit.photolink %>" class="prod" />
+                <img src="<%= Routes.static_path(@socket, @produit.photolink) %>" class="prod" />
             <% end %>
         </div>
         <div class="title_produit">
@@ -51,12 +60,18 @@
         <h2>Produits apparentés</h2>
         <div class="article" >
           <%= for apparent <- @apparentes do %>
-            <div class="produit" id="details">
-              <a class="produit_a" id="details_a" href="/show_produit/<%= apparent.id_produit %>">
-                <img src="data:image/png;base64, <%= apparent.photolink %>" href="/show_produit/<%= apparent.id_produit %>">
-                <h3 class="detail"><%= apparent.title %></h3>
-              </a>
-            </div>
+            <%= for categorie <- @categories do %>
+              <%= for souscategorie <- @souscategories do %>
+                <%= if apparent.id_cat == categorie.id_cat && apparent.id_souscat == souscategorie.id_souscat do %>
+                  <div class="produit" id="details">
+                    <a class="produit_a" id="details_a" href="/produit/<%= categorie.nom_cat %>/<%= souscategorie.nom_souscat %>/<%= apparent.id_produit %>">
+                      <img src="<%= Routes.static_path(@socket, apparent.photolink) %>" href="/show_produit/<%= apparent.id_produit %>">
+                      <h3 class="detail"><%= apparent.title %></h3>
+                    </a>
+                  </div>
+                <% end %>
+              <% end %>
+            <% end %>
           <% end %>
         </div>
     </div>
