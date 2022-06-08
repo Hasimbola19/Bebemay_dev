@@ -30,7 +30,8 @@ defmodule BebemayotteWeb.PageController do
     end
   end
 
-  # rendue des catégories
+  # rendue des 44
+  @spec produit_categorie(Plug.Conn.t(), map) :: Plug.Conn.t()
   def produit_categorie(conn, %{"cat" => cat}) do
     id = Plug.Conn.get_session(conn, :user_id)
     if id == nil do
@@ -44,7 +45,7 @@ defmodule BebemayotteWeb.PageController do
   def produit_souscategorie(conn, %{"cat" => cat, "souscat" => souscat}) do
     id = Plug.Conn.get_session(conn, :user_id)
     if id == nil do
-      LiveView.Controller.live_render(conn, BebemayotteWeb.Live.ProduitLive, session: %{"id_session" => 1, "user" => nil, "cat" => cat, "souscat" => souscat, "search" => nil, "conn" => conn})
+      LiveView.Controller.live_render(conn, BebemayotteWeb.Live.ProduitLive, session: %{"id_session" => 1, "user" => nil, "cat" => cat, "souscat" => souscat, "search" => nil})
     else
       LiveView.Controller.live_render(conn, BebemayotteWeb.Live.ProduitLive, session: %{"id_session" => id, "user" => id, "cat" => cat, "souscat" => souscat, "search" => nil})
     end
