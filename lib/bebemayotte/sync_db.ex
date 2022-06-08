@@ -283,20 +283,20 @@ defmodule Bebemayotte.SyncDb do
     end
   end
 
-  def get_image do
-    {:ok, query} = EBPRepo.query("SELECT Item.Id, Item.ItemImage FROM Item")
+  #def get_image do
+    #{:ok, query} = EBPRepo.query("SELECT Item.Id, Item.ItemImage FROM Item")
 
-    for c <- query.rows do
-      {:ok, prod_id} = Enum.fetch(c, 0)
-      {:ok, photo} = Enum.fetch(c, 1)
+    #for c <- query.rows do
+     # {:ok, prod_id} = Enum.fetch(c, 0)
+      #{:ok, photo} = Enum.fetch(c, 1)
 
-      path = File.write(Path.absname("C:/Données/MGBI/Hasimbola/Bebemay_dev/priv/uploads/#{prod_id}.jpeg"), photo, [:binary])
+      #path = File.write(Path.absname("C:/Données/MGBI/Hasimbola/Bebemay_dev/priv/uploads/#{prod_id}.jpeg"), photo, [:binary])
     # {:ok, data} = Base.decode64(condition_image(photo, prod_id))
     # path = File.write!("#{List.to_string(:code.priv_dir(:bebemayotte))}/uploads/#{prod_id}.png", photo, [:binary])
     #  path = File.write(Application.app_dir(:bebemayotte, Path.join("priv/uploads", "#{prod_id}.png")), photo, [:binary])
-      IO.inspect(path)
-    end
-  end
+     # IO.inspect(path)
+    #end
+  #end
 
   def mod_sccat do
     {:ok, souscategorie} = Ecto.Adapters.SQL.query(EBPRepo,"SELECT Id, Caption, ItemFamilyId FROM ItemSubFamily")
