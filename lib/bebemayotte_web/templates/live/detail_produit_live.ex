@@ -8,14 +8,9 @@ defmodule BebemayotteWeb.Live.DetailProduitLive do
   def mount(_params, %{"id_session" => id_session, "id_produit" => id_produit, "user" => user, "paniers" => list_panier, "quantites" => list_quantite}, socket) do
     categories = CatRequette.get_all_categorie()
     produit = ProdRequette.get_produit_by_id_produit(id_produit)
-    IO.puts "PRODUIIIIIIITTTTTTT"
-    IO.inspect(produit)
+    souscategories = SouscatRequette.get_all_souscategorie()
     stock = produit.stockmax
-    IO.puts "STOCCKKKKKKK"
-    IO.inspect(stock)
     quantite = stock |> Decimal.to_integer() |> quantite_initial(list_panier,list_quantite, id_produit)
-    IO.puts "QUANTITEEEEEEErecompile"
-    IO.inspect(quantite)
     categorie_prod = CatRequette.get_categorie_by_id_cat(produit.id_cat)
     souscategorie_prod = SouscatRequette.get_souscategorie_by_id_souscat(produit.id_souscat)
     produits_apparentes = ProdRequette.get_produit_apparentes(produit.id_souscat, id_produit)
@@ -23,7 +18,7 @@ defmodule BebemayotteWeb.Live.DetailProduitLive do
       :ok,
         socket |> assign(categories: categories, search: nil, id_session: id_session,
                          produit: produit, categorie_prod: categorie_prod,
-                         souscategorie_prod: souscategorie_prod, apparentes: produits_apparentes,
+                         souscategorie_prod: souscategorie_prod,souscategories: souscategories, apparentes: produits_apparentes,
                          quantite: quantite,user: user),
         layout: {BebemayotteWeb.LayoutView, "layout_live.html"}
     }
